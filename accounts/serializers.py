@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
-class RegisterSerializer(serializers.ModelSerializer) : 
+class UserRegistrationSerializer(serializers.ModelSerializer) : 
     confirm_password = serializers.CharField(write_only = True)
 
     class Meta : 
@@ -33,7 +33,7 @@ class RegisterSerializer(serializers.ModelSerializer) :
         return attrs
 
     def create(self, validated_data):
-        validated_data.pop("confirm_password", None)                  # already used for validation...not needed anymore
+        validated_data.pop("confirm_password")                  # already used for validation...not needed anymore
         user = User.objects.create_user(**validated_data)
         return user
 

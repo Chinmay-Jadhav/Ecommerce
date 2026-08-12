@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
+from .constants import APP_NAME
 
 class OrdersConfig(AppConfig):
-    name = 'orders'
+    name = APP_NAME

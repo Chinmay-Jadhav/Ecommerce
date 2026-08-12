@@ -6,11 +6,16 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
                                             )
 
-from .views import RegisterAPIView
+from .views import UserRegistrationAPIView
+from .constants import (
+    LOGIN_NAME, LOGIN_PATH,
+    REFRESH_NAME, REFRESH_PATH,
+    REGISTER_NAME, REGISTER_PATH
+)
 
 urlpatterns = [
     # Simple-JWT endpoints
-    path('login/', TokenObtainPairView.as_view(), name='login'),  
-    path('refresh/', TokenRefreshView.as_view(), name='refresh'),
-    path("register/", RegisterAPIView.as_view(), name="register"),   
+    path(LOGIN_PATH, TokenObtainPairView.as_view(), name=LOGIN_NAME),  
+    path(REFRESH_PATH, TokenRefreshView.as_view(), name=REFRESH_NAME),
+    path(REGISTER_PATH, UserRegistrationAPIView.as_view(), name=REGISTER_NAME),   
 ]

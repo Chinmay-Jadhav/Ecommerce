@@ -1,5 +1,7 @@
 from django.apps import AppConfig
 
+from .constants import APP_NAME
 
 class PaymentMethodsConfig(AppConfig):
-    name = 'payment_methods'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = APP_NAME

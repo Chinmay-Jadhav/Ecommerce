@@ -1,0 +1,7 @@
+APP_NAME = "products"
+
+DEFAULT_PAGE_SIZE = 4
+MAX_PAGE_SIZE = 100
+
+PAGE_QUERY_PARAM = "p"
+PAGE_SIZE_QUERY_PARAM = "page_size"

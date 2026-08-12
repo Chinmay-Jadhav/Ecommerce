@@ -4,12 +4,9 @@ from django.contrib.auth.models import User
 from products.models import Product
 from payment_methods.models import PaymentMethod
 
-class Order(models.Model) : 
+from .constants import OrderStatus
 
-    class Status(models.TextChoices) : 
-        PENDING = "PENDING", "Pending"
-        CONFIRMED = "CONFIRMED", "Confirmed"
-        CANCELLED = "CANCELLED", "Cancelled"
+class Order(models.Model) : 
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="orders")
@@ -17,7 +14,7 @@ class Order(models.Model) :
 
     quantity = models.PositiveIntegerField(default=-1)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, editable=False)
-    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+    status = models.CharField(max_length=20, choices=OrderStatus.choices, default=OrderStatus.PENDING)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
