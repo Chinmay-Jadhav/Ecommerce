@@ -3,6 +3,12 @@ from django.db import transaction
 from rest_framework import serializers
 
 from .models import Order
+from .tasks import process_order
+from .constants import (
+    INVALID_QUANTITY_ERROR,
+    INSUFFICIENT_STOCK_ERROR,
+    PAYMENT_METHOD_INACTIVE_ERROR
+)
 
 class OrderSerializer(serializers.ModelSerializer)  :
 
@@ -36,21 +42,21 @@ class OrderSerializer(serializers.ModelSerializer)  :
         if quantity <= 0 :
             raise serializers.ValidationError(
                 {
-                    "quantity" : "Quantity must be greater than zero."
+                    "quantity" : INVALID_QUANTITY_ERROR
                 }
             )
 
         if not payment_method.is_active :
             raise serializers.ValidationError(
                 {
-                    "payment_method" : "Selected method is unavailable"
+                    "payment_method" : PAYMENT_METHOD_INACTIVE_ERROR
                 }
             )
 
         if quantity > product.stock  :
             raise serializers.ValidationError(
                 {
-                    "quantity" : "Requested quantity exceeds available stocks."
+                    "quantity" : INSUFFICIENT_STOCK_ERROR
                 }
             )
 
@@ -68,11 +74,15 @@ class OrderSerializer(serializers.ModelSerializer)  :
         product.stock -= quantity
         product.save()
 
+        #override create() because additional logic is executed before and after obj creation
+
         order = Order.objects.create(
             user=user,
             total_price = total_price,
             **validated_data    # product + payment_method + quantity
         )
+
+        process_order.delay(order.id)
 
         return order
 

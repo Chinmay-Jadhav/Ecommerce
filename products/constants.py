@@ -5,3 +5,6 @@ MAX_PAGE_SIZE = 100
 
 PAGE_QUERY_PARAM = "p"
 PAGE_SIZE_QUERY_PARAM = "page_size"
+
+PRODUCT_ROUTE = "products"
+PRODUCT_BASENAME = "products"
