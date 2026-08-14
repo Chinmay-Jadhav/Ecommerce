@@ -5,7 +5,6 @@ from rest_framework import serializers
 from .models import Order
 from .tasks import process_order
 from .constants import (
-    INVALID_QUANTITY_ERROR,
     INSUFFICIENT_STOCK_ERROR,
     PAYMENT_METHOD_INACTIVE_ERROR
 )
@@ -38,13 +37,6 @@ class OrderSerializer(serializers.ModelSerializer)  :
         product = attrs["product"]
         payment_method = attrs["payment_method"]
         quantity = attrs["quantity"]
-
-        if quantity <= 0 :
-            raise serializers.ValidationError(
-                {
-                    "quantity" : INVALID_QUANTITY_ERROR
-                }
-            )
 
         if not payment_method.is_active :
             raise serializers.ValidationError(
