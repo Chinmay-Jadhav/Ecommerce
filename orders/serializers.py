@@ -21,7 +21,9 @@ class OrderSerializer(serializers.ModelSerializer)  :
             "total_price" , 
             "status" , 
             "created_at" , 
-            "updated_at" , 
+            "updated_at" ,
+            "payment_transaction_id" , 
+            "payment_completed_at" ,
         ]
 
         read_only_fields = [
@@ -30,6 +32,8 @@ class OrderSerializer(serializers.ModelSerializer)  :
             "status",
             "created_at",
             "updated_at",
+            "payment_transaction_id",
+            "payment_completed_at",
         ]
 
     def validate(self,attrs) :

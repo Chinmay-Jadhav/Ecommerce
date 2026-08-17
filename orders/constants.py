@@ -5,6 +5,7 @@ class OrderStatus(models.TextChoices):
     COMPLETED = "COMPLETED", "Completed"
     CANCELLED = "CANCELLED", "Cancelled"
     PROCESSING = "PROCESSING", "Processing"
+    FAILED = "FAILED", "Failed"
 
 APP_NAME = "orders"
 

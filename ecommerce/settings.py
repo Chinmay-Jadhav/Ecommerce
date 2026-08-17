@@ -37,6 +37,8 @@ CELERY_RESULT_BACKEND = os.getenv(
     "redis://localhost:6379/0",
 )
 
+BASE_URL = os.getenv("BASE_URL", "http://127.0.0.1:8000")
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -67,6 +69,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'payment_methods',
     'orders',
+    'payment_gateway',
 ]
 
 MIDDLEWARE = [
