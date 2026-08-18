@@ -6,6 +6,8 @@ class PaymentProcessSerializer(serializers.Serializer) :
     payment_method = serializers.CharField()
 
 class PaymentCallbackSerializer(serializers.Serializer) : 
-    transaction_id = serializers.CharField()
-    order_id = serializers.IntegerField()
+    gateway_order_id = serializers.CharField()
+    payment_transaction_id = serializers.CharField()
+    signature = serializers.CharField()
+    # order_id = serializers.IntegerField()
     status = serializers.ChoiceField(choices=["SUCCESS", "FAILED"])

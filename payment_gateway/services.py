@@ -9,6 +9,8 @@ from .constants import (
     PAYMENT_STATUS_SUCCESS,
     PAYMENT_STATUS_FAILED,
     PAYMENT_STATUS_PROCESSING,
+    PAYMENT_STATUS_CREATED,
+    DUMMY_SIGNATURE,
 )
 
 from orders.models import Order
@@ -19,26 +21,36 @@ class PaymentGatewayService :
     @staticmethod
     def process_payment(data : dict)  :
 
-        transaction_id = f"TXN-{uuid.uuid4().hex[:10].upper()}"
+        gateway_order_id = f"ORDER-{uuid.uuid4().hex[:12].upper()}"
 
-        time.sleep(3)
+        # time.sleep(3)
 
-        if random.random() < PAYMENT_SUCCESS_RATE : 
-            status = PAYMENT_STATUS_SUCCESS
-        else : 
-            status = PAYMENT_STATUS_FAILED
+        # if random.random() < PAYMENT_SUCCESS_RATE : 
+        #     status = PAYMENT_STATUS_SUCCESS
+        # else : 
+        #     status = PAYMENT_STATUS_FAILED
 
         return {
-            "transaction_id" : transaction_id, 
-            "status" : status,
+            "gateway_order_id" : gateway_order_id, 
+            "status" : PAYMENT_STATUS_CREATED
+            # "status" : status,
             }
 
 
     @staticmethod
     def process_callback(data : dict) : 
-        order = Order.objects.get(pk = data["order_id"])
 
-        order.payment_transaction_id = data["transaction_id"]
+        if data["signature"] != DUMMY_SIGNATURE  :
+            return {
+                "message" : "Invalid signature ."
+            }
+
+        # order = Order.objects.get(pk = data["order_id"])
+        order = Order.objects.get(
+            gateway_order_id = data["gateway_order_id"]
+                                  )
+
+        order.payment_transaction_id = data["payment_transaction_id"]
 
         if data["status"] == "SUCCESS"  :
             order.status = OrderStatus.COMPLETED

@@ -19,7 +19,8 @@ class Order(models.Model) :
     payment_transaction_id = models.CharField(max_length=100, blank=True)
     payment_completed_at = models.DateTimeField(null=True, blank=True)
 
-        
+    gateway_order_id = models.CharField(max_length=100, blank=True)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

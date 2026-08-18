@@ -12,42 +12,50 @@ from .constants import OrderStatus
 def process_order(order_id : int)  :
     order = Order.objects.get(pk=order_id)
 
+    # process_payload = {
+    #     "order_id" : order.id ,
+    #     "amount" : str(order.total_price) ,
+    #     "payment_method" : order.payment_method.name ,
+    # }
+
+    # process_response = requests.post(
+    #     f"{settings.BASE_URL}/api/v1/payment-gateway/process/",
+    #     json=process_payload ,
+    # )
+
     process_payload = {
-        "order_id" : order.id ,
-        "amount" : str(order.total_price) ,
-        "payment_method" : order.payment_method.name ,
-    }
+            "order_id" : order_id ,
+            "amount" : str(order.total_price) ,
+            "payment_method" : order.payment_method.name ,
+        }
 
     process_response = requests.post(
         f"{settings.BASE_URL}/api/v1/payment-gateway/process/",
-        json=process_payload ,
+        json=process_payload,
     )
 
-    process_data = process_response.json()
+    process_response.raise_for_status()
 
-    callback_payload = {
-        "order_id" : order.id ,
-        "transaction_id" : process_data["transaction_id"] ,
-        "status" : process_data["status"] ,
-    }
+    data = process_response.json()
 
-    requests.post(
-        f"{settings.BASE_URL}/api/v1/payment-gateway/callback/" ,
-        json=callback_payload ,
-    )
+    order.gateway_order_id = data["gateway_order_id"]
 
-    # try  :
-    #     order.status = OrderStatus.PROCESSING
-    #     order.save(update_fields=["status"])
+    order.save(
+        update_fields=[
+            "gateway_order_id" ,
+            ]
+        )
 
-    #     #simulation
-    #     time.sleep(10)
+    # process_data = process_response.json()
 
-    #     order.status = OrderStatus.COMPLETED
-    #     order.save(update_fields=["status"])
+    # callback_payload = {
+    #     "order_id" : order.id ,
+    #     "transaction_id" : process_data["transaction_id"] ,
+    #     "status" : process_data["status"] ,
+    # }
 
-    # except Exception : 
-    #     order.status = OrderStatus.CANCELLED
-    #     order.save(update_fields=["status"])
-    #     raise
+    # requests.post(
+    #     f"{settings.BASE_URL}/api/v1/payment-gateway/callback/" ,
+    #     json=callback_payload ,
+    # )
 
