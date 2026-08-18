@@ -12,17 +12,6 @@ from .constants import OrderStatus
 def process_order(order_id : int)  :
     order = Order.objects.get(pk=order_id)
 
-    # process_payload = {
-    #     "order_id" : order.id ,
-    #     "amount" : str(order.total_price) ,
-    #     "payment_method" : order.payment_method.name ,
-    # }
-
-    # process_response = requests.post(
-    #     f"{settings.BASE_URL}/api/v1/payment-gateway/process/",
-    #     json=process_payload ,
-    # )
-
     process_payload = {
             "order_id" : order_id ,
             "amount" : str(order.total_price) ,
@@ -46,16 +35,4 @@ def process_order(order_id : int)  :
             ]
         )
 
-    # process_data = process_response.json()
-
-    # callback_payload = {
-    #     "order_id" : order.id ,
-    #     "transaction_id" : process_data["transaction_id"] ,
-    #     "status" : process_data["status"] ,
-    # }
-
-    # requests.post(
-    #     f"{settings.BASE_URL}/api/v1/payment-gateway/callback/" ,
-    #     json=callback_payload ,
-    # )
 

@@ -1,14 +1,8 @@
 from django.utils import timezone
 
-import random
-import time
 import uuid
 
 from .constants import (
-    PAYMENT_SUCCESS_RATE,
-    PAYMENT_STATUS_SUCCESS,
-    PAYMENT_STATUS_FAILED,
-    PAYMENT_STATUS_PROCESSING,
     PAYMENT_STATUS_CREATED,
     DUMMY_SIGNATURE,
 )
@@ -23,17 +17,9 @@ class PaymentGatewayService :
 
         gateway_order_id = f"ORDER-{uuid.uuid4().hex[:12].upper()}"
 
-        # time.sleep(3)
-
-        # if random.random() < PAYMENT_SUCCESS_RATE : 
-        #     status = PAYMENT_STATUS_SUCCESS
-        # else : 
-        #     status = PAYMENT_STATUS_FAILED
-
         return {
             "gateway_order_id" : gateway_order_id, 
             "status" : PAYMENT_STATUS_CREATED
-            # "status" : status,
             }
 
 
@@ -45,7 +31,6 @@ class PaymentGatewayService :
                 "message" : "Invalid signature ."
             }
 
-        # order = Order.objects.get(pk = data["order_id"])
         order = Order.objects.get(
             gateway_order_id = data["gateway_order_id"]
                                   )

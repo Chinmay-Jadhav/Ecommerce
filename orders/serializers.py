@@ -60,7 +60,7 @@ class OrderSerializer(serializers.ModelSerializer)  :
 
         return attrs
 
-    # @transaction.atomic
+
     def create(self, validated_data):
         product = validated_data["product"]
         quantity = validated_data["quantity"]
