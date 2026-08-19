@@ -43,13 +43,6 @@ BASE_URL = os.getenv("BASE_URL", "http://127.0.0.1:8000")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SECRET_KEY
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = DEBUG
-
-ALLOWED_HOSTS = ALLOWED_HOSTS
-
 
 # Application definition
 
@@ -172,8 +165,14 @@ SIMPLE_JWT = {
 
 CELERY_BROKER_URL = CELERY_BROKER_URL
 CELERY_RESULT_BACKEND = CELERY_RESULT_BACKEND
-CELERY_TIMEZONE = 'Asia/Kolkata'
+CELERY_TIMEZONE = os.getenv(
+    "CELERY_TIMEZONE",
+    "Asia/Kolkata",
+)
 
 
-FLOWER_URL = "http://localhost:5555"
+FLOWER_URL = os.getenv(
+    "FLOWER_URL" ,
+    "http://localhost:5555",
+)
 FLOWER_URL_PREFIX = "flower"
