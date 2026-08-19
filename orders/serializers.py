@@ -65,20 +65,15 @@ class OrderSerializer(serializers.ModelSerializer)  :
         product = validated_data["product"]
         quantity = validated_data["quantity"]
 
-        total_price = product.price * quantity
-
-        user = self.context["request"].user
+        validated_data["total_price"] = product.price * quantity
+        validated_data["user"] = self.context["request"].user
 
         product.stock -= quantity
-        product.save()
+        product.save(update_fields = ["stock"])
 
         #override create() because additional logic is executed before and after obj creation
 
-        order = Order.objects.create(
-            user=user,
-            total_price = total_price,
-            **validated_data    # product + payment_method + quantity
-        )
+        order = super().create(validated_data)
 
         process_order.delay(order.id)
 

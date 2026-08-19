@@ -6,11 +6,12 @@ from rest_framework.response import Response
 
 from .serializers import PaymentProcessSerializer, PaymentCallbackSerializer
 from .services import PaymentGatewayService
+from .constants import HTTPMethod
 
 # Create your views here.
 class PaymentGatewayViewSet(viewsets.ViewSet) : 
 
-    @action(detail = False, methods=["post"])
+    @action(detail = False, methods=[HTTPMethod.POST])
     def process(self, request) : 
 
         serializer = PaymentProcessSerializer(data = request.data)
@@ -20,7 +21,7 @@ class PaymentGatewayViewSet(viewsets.ViewSet) :
 
         return Response(response, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=["post"])
+    @action(detail=False, methods=[HTTPMethod.POST])
     def callback(self, request):
 
         serializer = PaymentCallbackSerializer(

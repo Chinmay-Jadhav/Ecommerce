@@ -1,3 +1,5 @@
+from enum import StrEnum
+
 APP_NAME = 'payment_gateway'
 
 PAYMENT_GATEWAY_ROUTE = "payment-gateway"
@@ -14,3 +16,13 @@ DUMMY_SIGNATURE = "VALID_SIGNATURE"
 
 MAX_AMOUNT_PRICE = 10
 AMOUNT_DECIMAL_PLACES = 2
+
+INVALID_SIGNATURE_ERROR = "Invalid signature ."
+SUCCESSFUL_CALLBACK = "Callback processed successfully."
+
+class HTTPMethod(StrEnum):
+    GET = "get"
+    POST = "post"
+    PUT = "put"
+    DELETE = "delete"
+    OPTIONS = "options"

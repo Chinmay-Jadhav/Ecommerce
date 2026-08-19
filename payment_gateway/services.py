@@ -5,6 +5,9 @@ import uuid
 from .constants import (
     PAYMENT_STATUS_CREATED,
     DUMMY_SIGNATURE,
+    INVALID_SIGNATURE_ERROR,
+    PAYMENT_STATUS_SUCCESS,
+    SUCCESSFUL_CALLBACK
 )
 
 from orders.models import Order
@@ -28,7 +31,7 @@ class PaymentGatewayService :
 
         if data["signature"] != DUMMY_SIGNATURE  :
             return {
-                "message" : "Invalid signature ."
+                "message" : INVALID_SIGNATURE_ERROR
             }
 
         order = Order.objects.get(
@@ -37,7 +40,7 @@ class PaymentGatewayService :
 
         order.payment_transaction_id = data["payment_transaction_id"]
 
-        if data["status"] == "SUCCESS"  :
+        if data["status"] == PAYMENT_STATUS_SUCCESS  :
             order.status = OrderStatus.COMPLETED
             order.payment_completed_at = timezone.now()
         else : 
@@ -46,5 +49,5 @@ class PaymentGatewayService :
         order.save()
 
         return {
-            "message": "Callback processed successfully."
+            "message": SUCCESSFUL_CALLBACK
         }
