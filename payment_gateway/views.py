@@ -4,13 +4,27 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .serializers import PaymentProcessSerializer, PaymentCallbackSerializer
+from drf_spectacular.utils import extend_schema
+
+from .serializers import (
+    PaymentProcessSerializer,
+    PaymentCallbackSerializer,
+    )
 from .services import PaymentGatewayService
 from .constants import HTTPMethod
+from common.serializers import MessageSerializer
 
 # Create your views here.
 class PaymentGatewayViewSet(viewsets.ViewSet) : 
 
+    @extend_schema(
+            summary="Create Payment Gateway Order",
+            description="Simulates creating a payment order with an external payment gateway." ,
+            request=PaymentProcessSerializer ,  
+            responses={
+                200 : MessageSerializer,
+            }
+    )
     @action(detail = False, methods=[HTTPMethod.POST])
     def process(self, request) : 
 
@@ -21,6 +35,14 @@ class PaymentGatewayViewSet(viewsets.ViewSet) :
 
         return Response(response, status=status.HTTP_200_OK)
 
+    @extend_schema(
+            summary="Payment Gateway Callback" ,
+            description= "Simulates a payment gateway callback after payment completion." ,
+            request=PaymentCallbackSerializer ,
+            responses={
+                200 : MessageSerializer,
+                }
+    )
     @action(detail=False, methods=[HTTPMethod.POST])
     def callback(self, request):
 

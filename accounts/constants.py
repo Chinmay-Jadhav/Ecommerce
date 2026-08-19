@@ -8,3 +8,5 @@ REFRESH_NAME = "refresh"
 
 REGISTER_PATH = "auth/register/"
 REGISTER_NAME = "register"
+
+USER_REGISTERED_SUCCESSFULLY = "User registered successfully."
