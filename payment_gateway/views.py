@@ -12,17 +12,12 @@ from .serializers import (
     )
 from .services import PaymentGatewayService
 from .constants import HTTPMethod
-from common.serializers import MessageSerializer
+
 
 # Create your views here.
 class PaymentGatewayViewSet(viewsets.ViewSet) : 
 
-    @extend_schema(
-            request=PaymentProcessSerializer ,  
-            responses={
-                200 : MessageSerializer,
-            }
-    )
+    @extend_schema(request=PaymentProcessSerializer)
     @action(detail = False, methods=[HTTPMethod.POST])
     def process(self, request) : 
 
@@ -34,10 +29,7 @@ class PaymentGatewayViewSet(viewsets.ViewSet) :
         return Response(response, status=status.HTTP_200_OK)
 
     @extend_schema(
-            request=PaymentCallbackSerializer ,
-            responses={
-                200 : MessageSerializer,
-                }
+            request=PaymentCallbackSerializer 
     )
     @action(detail=False, methods=[HTTPMethod.POST])
     def callback(self, request):
