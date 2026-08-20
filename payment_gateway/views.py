@@ -18,8 +18,6 @@ from common.serializers import MessageSerializer
 class PaymentGatewayViewSet(viewsets.ViewSet) : 
 
     @extend_schema(
-            summary="Create Payment Gateway Order",
-            description="Simulates creating a payment order with an external payment gateway." ,
             request=PaymentProcessSerializer ,  
             responses={
                 200 : MessageSerializer,
@@ -36,8 +34,6 @@ class PaymentGatewayViewSet(viewsets.ViewSet) :
         return Response(response, status=status.HTTP_200_OK)
 
     @extend_schema(
-            summary="Payment Gateway Callback" ,
-            description= "Simulates a payment gateway callback after payment completion." ,
             request=PaymentCallbackSerializer ,
             responses={
                 200 : MessageSerializer,

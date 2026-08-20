@@ -6,7 +6,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
                                             )
 
-from .views import UserRegistrationAPIView
+from .views import UserRegistrationViewSet
 from .constants import (
     LOGIN_NAME, LOGIN_PATH,
     REFRESH_NAME, REFRESH_PATH,
@@ -15,7 +15,19 @@ from .constants import (
 
 urlpatterns = [
     # Simple-JWT endpoints
-    path(LOGIN_PATH, TokenObtainPairView.as_view(), name=LOGIN_NAME),  
-    path(REFRESH_PATH, TokenRefreshView.as_view(), name=REFRESH_NAME),
-    path(REGISTER_PATH, UserRegistrationAPIView.as_view(), name=REGISTER_NAME),   
+    path(
+        LOGIN_PATH ,
+        TokenObtainPairView.as_view() ,
+        name=LOGIN_NAME
+        ),  
+    path(
+        REFRESH_PATH,
+        TokenRefreshView.as_view(),
+        name=REFRESH_NAME
+        ),
+    path(
+        REGISTER_PATH,
+        UserRegistrationViewSet.as_view({"post" : "create"}),
+        name=REGISTER_NAME
+        ),   
 ]
