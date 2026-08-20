@@ -3,6 +3,11 @@ import os
 from dotenv import load_dotenv
 from datetime import timedelta
 
+from .configurations.drf_settings import (
+    REST_FRAMEWORK,
+    SPECTACULAR_SETTINGS,
+)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -63,6 +68,7 @@ INSTALLED_APPS = [
     'payment_methods',
     'orders',
     'payment_gateway',
+    'drf_spectacular' ,
 ]
 
 MIDDLEWARE = [
@@ -145,16 +151,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS' : 'products.paginations.CustomPagination',
-    'PAGE_SIZE' : 4,
-    'DEFAULT_PERMISSION_CLASSES' : (
-        'rest_framework.permissions.AllowAny',
-        ),
-    'DEFAULT_AUTHENTICATION_CLASSES' : (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        ),
-}
+REST_FRAMEWORK = REST_FRAMEWORK
+
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=JWT_ACCESS_TOKEN_MINUTES),
@@ -171,8 +169,12 @@ CELERY_TIMEZONE = os.getenv(
 )
 
 
+
 FLOWER_URL = os.getenv(
     "FLOWER_URL" ,
     "http://localhost:5555",
 )
 FLOWER_URL_PREFIX = "flower"
+
+SPECTACULAR_SETTINGS = SPECTACULAR_SETTINGS
+

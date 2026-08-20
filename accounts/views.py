@@ -1,22 +1,21 @@
 from django.shortcuts import render
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import mixins, viewsets
 
 from .serializers import UserRegistrationSerializer
+from .constants import USER_REGISTERED_SUCCESSFULLY
 
-class UserRegistrationAPIView(APIView) : 
 
-    def post(self, request) : 
-        user = request.data
-        serializer = UserRegistrationSerializer(data = user)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+class UserRegistrationViewSet(
+    viewsets.GenericViewSet,
+    mixins.CreateModelMixin
+) :
+    serializer_class = UserRegistrationSerializer
 
-        return Response(
-            {
-                "message" : "User registered successfully."
-                },
-            status=status.HTTP_201_CREATED,
-        )
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        response.data = {
+            "message" : USER_REGISTERED_SUCCESSFULLY
+        }
+
+        return response
