@@ -11,3 +11,6 @@ wheels/
 
 # secure environments
 .env 
+
+#drf-spectacular schema file
+schema.yml
