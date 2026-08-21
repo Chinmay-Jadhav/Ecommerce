@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
-
+from .constants import PASSWORD_NOT_MATCHING
 
 class UserRegistrationSerializer(serializers.ModelSerializer) : 
     confirm_password = serializers.CharField(write_only = True)

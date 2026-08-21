@@ -1,10 +1,10 @@
 from django.shortcuts import render
 
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, serializers
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, inline_serializer
 
 from .serializers import (
     PaymentProcessSerializer,
@@ -17,7 +17,18 @@ from .constants import HTTPMethod
 # Create your views here.
 class PaymentGatewayViewSet(viewsets.ViewSet) : 
 
-    @extend_schema(request=PaymentProcessSerializer)
+    @extend_schema(
+            request=PaymentProcessSerializer,
+            responses={
+                200 : inline_serializer(
+                    name="PaymentProcessResponse",
+                    fields={
+                        "gateway_order_id" : serializers.CharField() ,
+                        "status" : serializers.CharField(),
+                    },
+                ),
+            },
+            )
     @action(detail = False, methods=[HTTPMethod.POST])
     def process(self, request) : 
 
@@ -29,7 +40,16 @@ class PaymentGatewayViewSet(viewsets.ViewSet) :
         return Response(response, status=status.HTTP_200_OK)
 
     @extend_schema(
-            request=PaymentCallbackSerializer 
+            request=PaymentCallbackSerializer ,
+            responses={
+            200: inline_serializer(
+                name="PaymentProcessResponse",
+                fields={
+                    "gateway_order_id": serializers.CharField(),
+                    "status": serializers.CharField(),
+                },
+            ),
+        },
     )
     @action(detail=False, methods=[HTTPMethod.POST])
     def callback(self, request):

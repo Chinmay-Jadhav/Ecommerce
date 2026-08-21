@@ -7,6 +7,7 @@ from .configurations.drf_settings import (
     REST_FRAMEWORK,
     SPECTACULAR_SETTINGS,
 )
+from .configurations.jwt_configs import SIMPLE_JWT
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,14 +24,14 @@ ALLOWED_HOSTS = os.getenv(
     "localhost,127.0.0.1",
 ).split(",")
 
-JWT_ACCESS_TOKEN_MINUTES = int(
-    os.getenv("JWT_ACCESS_TOKEN_MINUTES", 60)
-)
+# JWT_ACCESS_TOKEN_MINUTES = int(
+#     os.getenv("JWT_ACCESS_TOKEN_MINUTES", 60)
+# )
 
-JWT_REFRESH_TOKEN_DAYS = int(
-    os.getenv("JWT_REFRESH_TOKEN_DAYS", 30)
+# JWT_REFRESH_TOKEN_DAYS = int(
+#     os.getenv("JWT_REFRESH_TOKEN_DAYS", 30)
 
-)
+# )
 
 CELERY_BROKER_URL = os.getenv(
     "CELERY_BROKER_URL",
@@ -133,6 +134,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "accounts.User"
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
@@ -151,15 +154,15 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-REST_FRAMEWORK = REST_FRAMEWORK
+# REST_FRAMEWORK = REST_FRAMEWORK
 
 
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=JWT_ACCESS_TOKEN_MINUTES),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=JWT_REFRESH_TOKEN_DAYS),
-    "ROTATE_REFRESH_TOKENS": False,
-    "BLACKLIST_AFTER_ROTATION": False,
-}
+# SIMPLE_JWT = {
+#     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=JWT_ACCESS_TOKEN_MINUTES),
+#     "REFRESH_TOKEN_LIFETIME": timedelta(days=JWT_REFRESH_TOKEN_DAYS),
+#     "ROTATE_REFRESH_TOKENS": False,
+#     "BLACKLIST_AFTER_ROTATION": False,
+# }
 
 CELERY_BROKER_URL = CELERY_BROKER_URL
 CELERY_RESULT_BACKEND = CELERY_RESULT_BACKEND
@@ -176,5 +179,5 @@ FLOWER_URL = os.getenv(
 )
 FLOWER_URL_PREFIX = "flower"
 
-SPECTACULAR_SETTINGS = SPECTACULAR_SETTINGS
+# SPECTACULAR_SETTINGS = SPECTACULAR_SETTINGS
 

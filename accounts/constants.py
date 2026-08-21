@@ -10,3 +10,5 @@ REGISTER_PATH = "auth/register/"
 REGISTER_NAME = "register"
 
 USER_REGISTERED_SUCCESSFULLY = "User registered successfully."
+
+PASSWORD_NOT_MATCHING = "Passwords do not match."
