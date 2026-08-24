@@ -24,15 +24,6 @@ ALLOWED_HOSTS = os.getenv(
     "localhost,127.0.0.1",
 ).split(",")
 
-# JWT_ACCESS_TOKEN_MINUTES = int(
-#     os.getenv("JWT_ACCESS_TOKEN_MINUTES", 60)
-# )
-
-# JWT_REFRESH_TOKEN_DAYS = int(
-#     os.getenv("JWT_REFRESH_TOKEN_DAYS", 30)
-
-# )
-
 CELERY_BROKER_URL = os.getenv(
     "CELERY_BROKER_URL",
     "redis://localhost:6379/0",
@@ -154,16 +145,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# REST_FRAMEWORK = REST_FRAMEWORK
-
-
-# SIMPLE_JWT = {
-#     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=JWT_ACCESS_TOKEN_MINUTES),
-#     "REFRESH_TOKEN_LIFETIME": timedelta(days=JWT_REFRESH_TOKEN_DAYS),
-#     "ROTATE_REFRESH_TOKENS": False,
-#     "BLACKLIST_AFTER_ROTATION": False,
-# }
-
 CELERY_BROKER_URL = CELERY_BROKER_URL
 CELERY_RESULT_BACKEND = CELERY_RESULT_BACKEND
 CELERY_TIMEZONE = os.getenv(
@@ -179,5 +160,4 @@ FLOWER_URL = os.getenv(
 )
 FLOWER_URL_PREFIX = "flower"
 
-# SPECTACULAR_SETTINGS = SPECTACULAR_SETTINGS
 

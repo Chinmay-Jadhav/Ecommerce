@@ -12,4 +12,3 @@ REGISTER_NAME = "register"
 USER_REGISTERED_SUCCESSFULLY = "User registered successfully."
 
 PASSWORD_NOT_MATCHING = "Passwords do not match."
-EMAIL_EXISTS = "Email already exists."
