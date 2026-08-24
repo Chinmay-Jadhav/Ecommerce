@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from django.conf import settings
 
 from products.models import Product
 from payment_methods.models import PaymentMethod
@@ -16,7 +17,7 @@ from .constants import (
 class Order(models.Model) : 
 
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="orders"
         )

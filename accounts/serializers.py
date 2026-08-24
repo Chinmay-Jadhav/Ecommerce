@@ -1,8 +1,12 @@
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
-from .constants import PASSWORD_NOT_MATCHING
+from .constants import (
+    PASSWORD_NOT_MATCHING,
+    EMAIL_EXISTS,
+                        )
+from .models import User
 
 class UserRegistrationSerializer(serializers.ModelSerializer) : 
     confirm_password = serializers.CharField(write_only = True)
@@ -24,13 +28,13 @@ class UserRegistrationSerializer(serializers.ModelSerializer) :
     def validate(self, attrs):
         if attrs["password"] != attrs["confirm_password"] : 
             raise serializers.ValidationError(
-                {"confirm_password" : "Passwords do not match."}
+                {"confirm_password" : PASSWORD_NOT_MATCHING}
             )
 
-        if User.objects.filter(email = attrs["email"]).exists() : 
-            raise serializers.ValidationError(
-                {"email" : "Email already exists."}
-            )
+        # if User.objects.filter(email = attrs["email"]).exists() : 
+        #     raise serializers.ValidationError(
+        #         {"email" : EMAIL_EXISTS}
+        #     )
 
         return attrs
 
