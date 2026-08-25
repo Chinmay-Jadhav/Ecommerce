@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
                                             )
-from rest_framework.routers import SimpleRouter
+from rest_framework.routers import DefaultRouter
 
 from .views import UserRegistrationViewSet
 from .constants import (
@@ -14,7 +14,7 @@ from .constants import (
     REGISTER_NAME, REGISTER_PATH
 )
 
-router = SimpleRouter(trailing_slash=False)
+router = DefaultRouter(trailing_slash=False)
 router.register(
     REGISTER_PATH,
     UserRegistrationViewSet,
