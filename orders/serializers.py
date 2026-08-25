@@ -28,7 +28,6 @@ class OrderSerializer(serializers.ModelSerializer)  :
         ]
 
         read_only_fields = [
-            "id",
             "total_price",
             "status",
             "created_at",

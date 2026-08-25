@@ -5,12 +5,20 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
                                             )
+from rest_framework.routers import SimpleRouter
 
 from .views import UserRegistrationViewSet
 from .constants import (
     LOGIN_NAME, LOGIN_PATH,
     REFRESH_NAME, REFRESH_PATH,
     REGISTER_NAME, REGISTER_PATH
+)
+
+router = SimpleRouter(trailing_slash=False)
+router.register(
+    REGISTER_PATH,
+    UserRegistrationViewSet,
+    basename=REGISTER_NAME,
 )
 
 urlpatterns = [
@@ -24,10 +32,7 @@ urlpatterns = [
         REFRESH_PATH,
         TokenRefreshView.as_view(),
         name=REFRESH_NAME
-        ),
-    path(
-        REGISTER_PATH,
-        UserRegistrationViewSet.as_view({"post" : "create"}),
-        name=REGISTER_NAME
-        ),   
+        ),  
 ]
+
+urlpatterns += router.urls

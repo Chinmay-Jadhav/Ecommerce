@@ -26,3 +26,5 @@ class HTTPMethod(StrEnum):
     PUT = "put"
     DELETE = "delete"
     OPTIONS = "options"
+
+PAYMENT_GATEWAY_PATH = "/api/v1/payment-gateway/process/"

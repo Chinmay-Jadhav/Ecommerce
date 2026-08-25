@@ -6,7 +6,7 @@ import time
 import requests
 
 from .models import Order
-from .constants import OrderStatus
+from payment_gateway.constants import PAYMENT_GATEWAY_PATH
 
 @shared_task
 def process_order(order_id : int)  :
@@ -19,7 +19,7 @@ def process_order(order_id : int)  :
         }
 
     process_response = requests.post(
-        f"{settings.BASE_URL}/api/v1/payment-gateway/process/",
+        f"{settings.BASE_URL}{PAYMENT_GATEWAY_PATH}",
         json=process_payload,
     )
 
