@@ -14,7 +14,7 @@ def process_order(order_id : int)  :
 
     process_payload = {
             "order_id" : order_id ,
-            "amount" : order.total_price ,  
+            "amount" : str(order.total_price) ,  
             "payment_method" : order.payment_method.name ,
         }
 
