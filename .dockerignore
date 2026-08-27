@@ -16,6 +16,7 @@ wheels/
 
 # Secrets / env files
 .env
+.env.docker
 
 # Git
 .git/
@@ -35,6 +36,5 @@ schema.yml
 .ruff_cache/
 
 # Docker
-Dockerfile
 docker-compose.yml
 .dockerignore

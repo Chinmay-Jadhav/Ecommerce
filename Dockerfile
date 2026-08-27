@@ -22,7 +22,5 @@ COPY --from=builder /app/.venv /app/.venv
 
 COPY . .
 
-EXPOSE 8000
-
 # django gunicorn 
 CMD [ "gunicorn", "--config", "gunicorn_config.py", "ecommerce.wsgi:application" ]
