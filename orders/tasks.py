@@ -1,12 +1,14 @@
 from django.conf import settings
+from django.core.serializers.json import DjangoJSONEncoder
 
 from celery import shared_task 
 
-import time
 import requests
+import json
 
 from .models import Order
 from payment_gateway.constants import PAYMENT_GATEWAY_PATH
+from .constants import CONTENT_TYPE
 
 @shared_task
 def process_order(order_id : int)  :
@@ -18,9 +20,18 @@ def process_order(order_id : int)  :
             "payment_method" : order.payment_method.name ,
         }
 
+    payload = json.dumps(
+        process_payload,
+        cls=DjangoJSONEncoder,
+    )
+
     process_response = requests.post(
         f"{settings.BASE_URL}{PAYMENT_GATEWAY_PATH}",
-        json=process_payload,
+        data=payload,
+        headers={
+            'Content-Type': CONTENT_TYPE,
+            'Accept' : CONTENT_TYPE
+            },
     )
 
     process_response.raise_for_status()

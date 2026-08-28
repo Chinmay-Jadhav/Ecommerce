@@ -1,0 +1,80 @@
+services:
+
+  db:
+    image: postgres:18-alpine
+    container_name: ecommerce_db
+    restart: unless-stopped
+    env_file: .env.docker
+    environment:
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_HOST_PORT}:${DB_CONTAINER_PORT}"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis 
+  redis:
+    image: redis:7.4-alpine
+    container_name: ecommerce_redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT}:${REDIS_CONTAINER_PORT}"
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG" ]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+
+  # Django / Gunicorn 
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecommerce_web
+    restart: unless-stopped
+    env_file: .env.docker
+    ports:
+      - "${SERVER_PORT}:${SERVER_CONTAINER_PORT}"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # Celery Worker 
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecommerce_celery_worker
+    restart: unless-stopped
+    env_file: .env.docker
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: celery -A ecommerce worker --loglevel=info 
+
+  # Flower 
+  flower:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecommerce_flower
+    restart: unless-stopped
+    env_file: .env.docker
+    ports:
+      - "${FLOWER_PORT}:${FLOWER_CONTAINER_PORT}"
+    depends_on:
+      redis:
+        condition: service_healthy
+    command: celery -A ecommerce flower --port=5555
+
+volumes:
+  postgres_data:

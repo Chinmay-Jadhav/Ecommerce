@@ -11,6 +11,7 @@ wheels/
 
 # secure environments
 .env 
+.env.docker
 
 #drf-spectacular schema file
 schema.yml
