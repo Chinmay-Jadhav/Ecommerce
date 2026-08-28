@@ -3,24 +3,11 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 from celery import shared_task 
 
-import time
 import requests
 import json
-import decimal
 
 from .models import Order
 from payment_gateway.constants import PAYMENT_GATEWAY_PATH
-
-# class NumberStr(float) : 
-#     def __init__(self, o):
-#         self.o = o
-#     def __repr__(self):
-#         return str(self.o)
-
-# def decimal_serializer(o) : 
-#     if isinstance(o, decimal.Decimal) : 
-#         return NumberStr(o)
-#     raise TypeError(f"{repr(o)} is not JSON serializable")
 
 @shared_task
 def process_order(order_id : int)  :
@@ -35,7 +22,6 @@ def process_order(order_id : int)  :
     payload = json.dumps(
         process_payload,
         cls=DjangoJSONEncoder,
-        # default=decimal_serializer,
     )
 
     process_response = requests.post(
