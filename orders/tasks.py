@@ -8,6 +8,7 @@ import json
 
 from .models import Order
 from payment_gateway.constants import PAYMENT_GATEWAY_PATH
+from .constants import CONTENT_TYPE
 
 @shared_task
 def process_order(order_id : int)  :
@@ -28,8 +29,8 @@ def process_order(order_id : int)  :
         f"{settings.BASE_URL}{PAYMENT_GATEWAY_PATH}",
         data=payload,
         headers={
-            'Content-Type': 'application/json',
-            'Accept' : 'application/json'
+            'Content-Type': CONTENT_TYPE,
+            'Accept' : CONTENT_TYPE
             },
     )
 
